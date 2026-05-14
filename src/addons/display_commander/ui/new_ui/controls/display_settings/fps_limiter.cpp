@@ -259,7 +259,6 @@ void DrawQuickFpsLimitChanger(display_commander::ui::IImGuiWrapper& imgui) {
 }
 
 void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui) {
-    (void)imgui;
     CALL_GUARD_NO_TS();
     imgui.Spacing();
 
@@ -348,7 +347,8 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
     }
 
     // (fps limiter mode selection) — align with slider rows (checkbox + SameLine offset above)
-    PushFpsLimiterSliderColumnAlign(imgui, fps_limiter_checkbox_column_gutter);
+    // PushFpsLimiterSliderColumnAlign(imgui, fps_limiter_checkbox_column_gutter);
+    // imgui.Indent();
     if (!fps_limit_enabled) {
         imgui.BeginDisabled();
     }
@@ -385,7 +385,6 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
         imgui.EndDisabled();
     }
 
-    imgui.Indent();
     DrawDisplaySettings_FpsLimiterAdvanced(imgui, fps_limiter_checkbox_column_gutter);
     {
         const DLSSGSummaryLite fg2_lite = GetDLSSGSummaryLite();
@@ -395,7 +394,7 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
                                       == FrameTimeMode::kPresent;
         const auto current_preset = static_cast<FpsLimiterPreset>(settings::g_mainTabSettings.native_reflex_fps_preset.GetValue());
         {
-            imgui.Spacing();
+            // imgui.Spacing();
 
             // kCustom
             if (current_preset == FpsLimiterPreset::kCustom)
@@ -526,7 +525,7 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
         auto display_input_ratio = !(::IsNativeFramePacingInSync() && GetEffectiveNativePacingSimStartOnly());
 
         if (display_input_ratio) {
-            imgui.Spacing();
+            //imgui.Spacing();
             if (ComboSettingWrapper(settings::g_mainTabSettings.onpresent_sync_low_latency_ratio,
                                     "Display / Input Ratio", imgui, 600.f)) {
             }
@@ -1078,7 +1077,7 @@ static void DrawDisplaySettings_FpsLimiterAdvanced(display_commander::ui::IImGui
 
     // Reflex combo: always visible; which setting is used depends on FPS Limiter Mode (and applies even when checkbox off)
     if (IsReflexAvailable()) {
-        PushFpsLimiterSliderColumnAlign(imgui, fps_limiter_checkbox_column_gutter, true);
+        //PushFpsLimiterSliderColumnAlign(imgui, fps_limiter_checkbox_column_gutter, true);
         const FpsLimiterMode mode = static_cast<FpsLimiterMode>(current_item);
         bool combo_changed = false;
         if (mode == FpsLimiterMode::kOnPresentSync) {

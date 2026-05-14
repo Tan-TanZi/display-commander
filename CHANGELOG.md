@@ -26,6 +26,9 @@ Planned:
 - FG rate counter
 - Show override from NPI for DLSS presets. @adap
 
+## v0.14.19
+** [ui] **Fixed alignmenty inside Display Settings**
+
 ## v0.14.18
 ** [bugfix] **Potencial fix for fps loss issue** - Stop quering GetFrameStatistics after certain number of failures
 

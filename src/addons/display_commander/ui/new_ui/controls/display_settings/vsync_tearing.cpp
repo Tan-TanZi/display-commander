@@ -46,7 +46,7 @@ static void DrawDisplaySettings_VSyncAndTearing_Checkboxes_Reshade(display_comma
     if (g_reshade_create_swapchain_capture_count.load() > 0) {
         auto desc_ptr_cb = g_last_swapchain_desc_post.load();
         if (is_dxgi_pt) {
-            PushFpsLimiterSliderColumnAlign(imgui, GetMainTabCheckboxColumnGutter(imgui), true);
+            //PushFpsLimiterSliderColumnAlign(imgui, GetMainTabCheckboxColumnGutter(imgui), true);
             if (ComboSettingWrapper(settings::g_mainTabSettings.vsync_override, "VSync", imgui, 300.f)) {
                 LogInfo("VSync override changed to index %d", settings::g_mainTabSettings.vsync_override.GetValue());
             }
@@ -323,7 +323,7 @@ static bool DrawDisplaySettings_VSyncAndTearing_PresentModeLine(display_commande
         (current_api == reshade::api::device_api::d3d10 || current_api == reshade::api::device_api::d3d11
          || current_api == reshade::api::device_api::d3d12);
 
-    PushFpsLimiterSliderColumnAlign(imgui, GetMainTabCheckboxColumnGutter(imgui), true);
+    //PushFpsLimiterSliderColumnAlign(imgui, GetMainTabCheckboxColumnGutter(imgui), true);
     imgui.TextColored(ui::colors::TEXT_LABEL, "Current Present Mode:");
     imgui.SameLine();
     ImVec4 present_mode_color = ui::colors::TEXT_DIMMED;

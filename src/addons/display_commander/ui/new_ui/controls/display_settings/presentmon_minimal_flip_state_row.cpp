@@ -49,7 +49,7 @@ void DrawPresentMonMinimalFlipStateRow(display_commander::ui::IImGuiWrapper& img
         state_paren += ")";
     }
 
-    PushFpsLimiterSliderColumnAlign(imgui, GetMainTabCheckboxColumnGutter(imgui), true);
+    //PushFpsLimiterSliderColumnAlign(imgui, GetMainTabCheckboxColumnGutter(imgui), true);
     imgui.TextColored(ui::colors::TEXT_LABEL, "Flip state:");
     imgui.SameLine();
     imgui.TextColored(state_color, "%s", state_paren.c_str());

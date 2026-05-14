@@ -4,15 +4,13 @@
 namespace ui::new_ui {
 
 void DrawDisplaySettings_WindowModeAndApply(display_commander::ui::IImGuiWrapper& imgui) {
-    (void)imgui;
     CALL_GUARD_NO_TS();
     // Window Mode dropdown (with persistent setting)
     static bool was_ever_in_no_changes_mode = false;
     if (static_cast<WindowMode>(settings::g_mainTabSettings.window_mode.GetValue()) == WindowMode::kNoChanges) {
         was_ever_in_no_changes_mode = true;
     }
-
-    PushFpsLimiterSliderColumnAlign(imgui, GetMainTabCheckboxColumnGutter(imgui));
+    //PushFpsLimiterSliderColumnAlign(imgui, GetMainTabCheckboxColumnGutter(imgui));
     if (ComboSettingEnumWrapper(settings::g_mainTabSettings.window_mode, "Window Mode", imgui, 600.f,
                                 &ui::colors::TEXT_LABEL)) {
         // Don't apply changes immediately - let the normal window management system handle it
