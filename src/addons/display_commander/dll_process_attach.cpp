@@ -18,6 +18,7 @@
 #include "reshade_addon_handlers.hpp"
 #include "reshade_module_detection.hpp"
 #include "settings/hook_suppression_settings.hpp"
+#include "utils/cbt_injection_service.hpp"
 #include "utils/dc_load_path.hpp"
 #include "utils/display_commander_logger.hpp"
 #include "utils/helper_exe_filter.hpp"
@@ -48,7 +49,7 @@
 #include <winver.h>
 
 namespace {
-enum class ProcessAttachEarlyResult { Continue, RefuseLoad, EarlySuccess };
+enum class ProcessAttachEarlyResult { Continue, RefuseLoad, EarlySuccess, CbtInjecteeMinimal };
 
 constexpr const char* kDisplayCommanderMinLoadVersion = "0.12.194";
 
@@ -509,7 +510,6 @@ ProcessAttachEarlyResult ProcessAttach_EarlyChecksAndInit(HMODULE h_module) {
         }
     }
 
-    g_display_commander_state.store(DisplayCommanderState::DC_STATE_HOOKED, std::memory_order_release);
     LPSTR command_line = GetCommandLineA();
     if (command_line != nullptr && command_line[0] != '\0') {
         OutputDebugStringA("[DisplayCommander] Command line: ");
@@ -522,6 +522,17 @@ ProcessAttachEarlyResult ProcessAttach_EarlyChecksAndInit(HMODULE h_module) {
     } else {
         OutputDebugStringA("[DisplayCommander] Command line: (empty)\n");
     }
+
+    if (display_commander::cbt_service::ShouldEnterCbtInjecteeMinimalGuest()) {
+        if (!display_commander::cbt_service::CurrentProcessExeMatchesInjectionWhitelistPrefixes()) {
+            OutputDebugStringA("[DisplayCommander] CBT injectee minimal attach (guest)\n");
+            g_display_commander_state.store(DisplayCommanderState::DC_STATE_CBT_INJECTEE, std::memory_order_release);
+            return ProcessAttachEarlyResult::CbtInjecteeMinimal;
+        }
+        OutputDebugStringA("[DisplayCommander] CBT injectee whitelist prefix match: full addon init\r\n");
+    }
+
+    g_display_commander_state.store(DisplayCommanderState::DC_STATE_HOOKED, std::memory_order_release);
     g_shutdown.store(false);
     return ProcessAttachEarlyResult::Continue;
 }
@@ -573,6 +584,11 @@ void OnProcessAttach(HMODULE h_module) {
     if (early == ProcessAttachEarlyResult::EarlySuccess) {
         reason = "EarlySuccess";
         LogBootDllMainStage("PROCESS_ATTACH: return TRUE (EarlySuccess)");
+        return;
+    }
+    if (early == ProcessAttachEarlyResult::CbtInjecteeMinimal) {
+        reason = "CbtInjecteeMinimal";
+        LogBootDllMainStage("PROCESS_ATTACH: return TRUE (CbtInjecteeMinimal)");
         return;
     }
     LogBootDllMainStage("PROCESS_ATTACH: after ProcessAttach_EarlyChecksAndInit (continue)");
@@ -645,6 +661,7 @@ void OnProcessAttach(HMODULE h_module) {
 
 void OnProcessDetach(HMODULE h_module) {
     LogBootDllMainStage("DLL_PROCESS_DETACH: entered");
+    display_commander::cbt_service::DllDetachCbtCleanup();
     if (g_reshade_module == nullptr) {
         LogBootDllMainStage("DLL_PROCESS_DETACH: early return (ReShade module was never set)");
         return;

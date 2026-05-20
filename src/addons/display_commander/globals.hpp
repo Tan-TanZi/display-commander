@@ -59,7 +59,8 @@ enum DisplayCommanderState : int {
         1,                    // Will not hook; register as addon only (another DC is HOOKED or we loaded another DC)
     DC_STATE_HOOKED = 2,      // This instance installs hooks (MinHook, etc.)
     DC_STATE_DO_NOTHING = 3,  // Do not hook; no other DC was loaded
-    DC_STATE_DLL_LOADER = 4   // Loader instance: loads DC from Dll\X.Y.Z and does not hook; stays quiet
+    DC_STATE_DLL_LOADER = 4,  // Loader instance: loads DC from Dll\X.Y.Z and does not hook; stays quiet
+    DC_STATE_CBT_INJECTEE = 5 // WH_CBT hook DLL loaded only for light guest work; no addon/hooks registration
 };
 extern std::atomic<DisplayCommanderState> g_display_commander_state;
 
