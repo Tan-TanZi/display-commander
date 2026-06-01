@@ -42,7 +42,7 @@ void DrawDisplaySettings_DisplayAndTarget(display_commander::ui::IImGuiWrapper& 
         }
 
         if (backbuffer_w > 0 && backbuffer_h > 0) {
-            imgui.TextColored(ui::colors::TEXT_LABEL, "Render resolution:");
+            imgui.TextColored(ui::colors::TEXT_LABEL, "渲染分辨率：");
             imgui.SameLine();
             imgui.Text("%ux%u", static_cast<unsigned>(backbuffer_w), static_cast<unsigned>(backbuffer_h));
 
@@ -75,19 +75,19 @@ void DrawDisplaySettings_DisplayAndTarget(display_commander::ui::IImGuiWrapper& 
             }
             imgui.SameLine();
             if (refresh_hz > 0.0) {
-                imgui.TextColored(ui::colors::TEXT_LABEL, "Refresh rate:");
+                imgui.TextColored(ui::colors::TEXT_LABEL, "刷新率：");
                 imgui.SameLine();
                 imgui.Text("%.1f Hz", refresh_hz);
             } else {
-                imgui.TextColored(ui::colors::TEXT_LABEL, "Refresh rate:");
+                imgui.TextColored(ui::colors::TEXT_LABEL, "刷新率：");
                 imgui.SameLine();
                 imgui.TextColored(ui::colors::TEXT_DIMMED, "—");
             }
             if (imgui.IsItemHovered()) {
                 imgui.SetTooltipEx(
-                    "Render resolution: the resolution the game requested (before any modifications). "
+                    "渲染分辨率：游戏（在未进行任何修改前）所要求的分辨率。 "
                     "Matches Special K's render_x/render_y.\n"
-                    "Refresh rate: selected display's configured rate from the display list.");
+                    "刷新率：从显示器列表中选择的显示器的配置刷新率。");
             }
 
             // VRAM and RAM usage on one line under Render resolution
@@ -101,14 +101,14 @@ void DrawDisplaySettings_DisplayAndTarget(display_commander::ui::IImGuiWrapper& 
                 imgui.Text("%llu / %llu MiB", static_cast<unsigned long long>(used_mib),
                            static_cast<unsigned long long>(total_mib));
                 if (imgui.IsItemHovered()) {
-                    imgui.SetTooltipEx("GPU video memory used / budget (DXGI adapter memory budget).");
+                    imgui.SetTooltipEx("GPU 显存已用/预算（DXGI 适配器内存预算）。");
                 }
             } else {
                 imgui.TextColored(ui::colors::TEXT_LABEL, "VRAM:");
                 imgui.SameLine();
                 imgui.TextColored(ui::colors::TEXT_DIMMED, "N/A");
                 if (imgui.IsItemHovered()) {
-                    imgui.SetTooltipEx("VRAM unavailable (DXGI adapter or budget query failed).");
+                    imgui.SetTooltipEx("VRAM不可用（DXGI适配器或预算查询失败）。");
                 }
             }
 
@@ -136,7 +136,7 @@ void DrawDisplaySettings_DisplayAndTarget(display_commander::ui::IImGuiWrapper& 
                 }
                 if (imgui.IsItemHovered()) {
                     imgui.SetTooltipEx(
-                        "System RAM in use (this app working set) / total (GlobalMemoryStatusEx, "
+                        "系统正在使用的RAM (this app working set) / total (GlobalMemoryStatusEx, "
                         "GetProcessMemoryInfo).");
                 }
             } else {
@@ -190,7 +190,7 @@ void DrawDisplaySettings_DisplayAndTarget(display_commander::ui::IImGuiWrapper& 
         }
         const bool target_display_combo_hovered = imgui.IsItemHovered();
         imgui.SameLine(0.f, st.ItemInnerSpacing.x);
-        imgui.TextColored(ui::colors::TEXT_LABEL, "Target Display");
+        imgui.TextColored(ui::colors::TEXT_LABEL, "目标显示");
         const bool target_display_label_hovered = imgui.IsItemHovered();
         imgui.EndGroup();
 
@@ -203,7 +203,7 @@ void DrawDisplaySettings_DisplayAndTarget(display_commander::ui::IImGuiWrapper& 
                 "Choose which monitor to apply size/pos to. The monitor corresponding to the "
                 "game window is automatically selected.";
             if (!saved_device_id.empty() && saved_device_id != "No Window" && saved_device_id != "No Monitor"
-                && saved_device_id != "Monitor Info Failed") {
+                && saved_device_id != "监控信息获取失败") {
                 tooltip_text += "\n\nGame window is on: " + saved_device_id;
             }
             imgui.SetTooltipEx("%s", tooltip_text.c_str());
@@ -213,7 +213,7 @@ void DrawDisplaySettings_DisplayAndTarget(display_commander::ui::IImGuiWrapper& 
         if (s_target_display_changed
             && (mode == WindowMode::kNoChanges || mode == WindowMode::kPreventFullscreenNoResize)) {
             imgui.TextColored(ui::colors::TEXT_WARNING, ICON_FK_WARNING
-                              "Warning: Moving to another display isn't implemented in this window mode.");
+                              "警告：在此窗口模式下，无法实现切换到另一个显示器。");
         }
     }
 }
