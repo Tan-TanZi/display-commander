@@ -320,7 +320,7 @@ void DrawAdvancedSettings(display_commander::ui::IImGuiWrapper& imgui) {
     // Advanced Settings Control
     {
         bool advanced_settings = settings::g_mainTabSettings.advanced_settings_enabled.GetValue();
-        if (imgui.Checkbox(ICON_FK_FILE_CODE " Show All Tabs", &advanced_settings)) {
+        if (imgui.Checkbox(ICON_FK_FILE_CODE " 显示所有标签页", &advanced_settings)) {
             settings::g_mainTabSettings.advanced_settings_enabled.SetValue(advanced_settings);
             LogInfo("Advanced settings %s", advanced_settings ? "enabled" : "disabled");
         }
@@ -334,7 +334,7 @@ void DrawAdvancedSettings(display_commander::ui::IImGuiWrapper& imgui) {
     imgui.Spacing();
 
     // Logging Level Control
-    if (ComboSettingEnumWrapper(settings::g_mainTabSettings.log_level, "Logging Level", imgui)) {
+    if (ComboSettingEnumWrapper(settings::g_mainTabSettings.log_level, "日志级别", imgui)) {
         // Always log the level change (using LogCurrentLogLevel which uses LogError)
         LogCurrentLogLevel();
     }
@@ -350,7 +350,7 @@ void DrawAdvancedSettings(display_commander::ui::IImGuiWrapper& imgui) {
     imgui.Spacing();
 
     // Individual Tab Visibility Settings
-    imgui.Text("Show Individual Tabs:");
+    imgui.Text("显示单个标签页:");
     imgui.Indent();
 
     if (ui::new_ui::g_tab_manager.HasTab("hotkeys")) {
@@ -399,7 +399,7 @@ void DrawAdvancedSettings(display_commander::ui::IImGuiWrapper& imgui) {
     const std::vector<modules::ModuleDescriptor> modules_list = modules::GetModules();
     if (!modules_list.empty()) {
         imgui.Spacing();
-        imgui.Text("Modules:");
+        imgui.Text("模块:");
         imgui.Indent();
         for (const modules::ModuleDescriptor& module : modules_list) {
             bool enabled = module.enabled;
