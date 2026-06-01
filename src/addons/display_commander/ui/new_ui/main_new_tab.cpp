@@ -354,7 +354,7 @@ void DrawAdvancedSettings(display_commander::ui::IImGuiWrapper& imgui) {
     imgui.Indent();
 
     if (ui::new_ui::g_tab_manager.HasTab("hotkeys")) {
-        if (CheckboxSetting(settings::g_mainTabSettings.show_hotkeys_tab, "Show Hotkeys Tab", imgui)) {
+        if (CheckboxSetting(settings::g_mainTabSettings.show_hotkeys_tab, "显示快捷键标签页", imgui)) {
             LogInfo("Show Hotkeys tab %s",
                     settings::g_mainTabSettings.show_hotkeys_tab.GetValue() ? "enabled" : "disabled");
         }
@@ -364,7 +364,7 @@ void DrawAdvancedSettings(display_commander::ui::IImGuiWrapper& imgui) {
     }
 
     if (ui::new_ui::g_tab_manager.HasTab("advanced")) {
-        if (CheckboxSetting(settings::g_mainTabSettings.show_advanced_tab, "Show Advanced Tab", imgui)) {
+        if (CheckboxSetting(settings::g_mainTabSettings.show_advanced_tab, "显示高级选项卡", imgui)) {
             LogInfo("Show Advanced tab %s",
                     settings::g_mainTabSettings.show_advanced_tab.GetValue() ? "enabled" : "disabled");
         }
@@ -374,7 +374,7 @@ void DrawAdvancedSettings(display_commander::ui::IImGuiWrapper& imgui) {
     }
 
     if (ui::new_ui::g_tab_manager.HasTab("controller")) {
-        if (CheckboxSetting(settings::g_mainTabSettings.show_controller_tab, "Show Controller Tab", imgui)) {
+        if (CheckboxSetting(settings::g_mainTabSettings.show_controller_tab, "显示控制器选项卡", imgui)) {
             LogInfo("Show Controller tab %s",
                     settings::g_mainTabSettings.show_controller_tab.GetValue() ? "enabled" : "disabled");
         }
@@ -385,7 +385,7 @@ void DrawAdvancedSettings(display_commander::ui::IImGuiWrapper& imgui) {
     }
 
     if (ui::new_ui::g_tab_manager.HasTab("reshade")) {
-        if (CheckboxSetting(settings::g_mainTabSettings.show_reshade_tab, "Show ReShade Tab", imgui)) {
+        if (CheckboxSetting(settings::g_mainTabSettings.show_reshade_tab, "显示 ReShade 选项卡", imgui)) {
             LogInfo("Show ReShade tab %s",
                     settings::g_mainTabSettings.show_reshade_tab.GetValue() ? "enabled" : "disabled");
         }
