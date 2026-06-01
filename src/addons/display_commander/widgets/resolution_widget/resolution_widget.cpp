@@ -149,7 +149,7 @@ void ResolutionWidget::OnDraw(display_commander::ui::IImGuiWrapper& imgui) {
 
 void ResolutionWidget::DrawAutoApplyCheckbox(display_commander::ui::IImGuiWrapper& imgui) {
     bool auto_apply = g_resolution_settings->GetAutoApply();
-    if (imgui.Checkbox("Auto-apply changes", &auto_apply)) {
+    if (imgui.Checkbox("自动应用更改", &auto_apply)) {
         g_resolution_settings->SetAutoApply(auto_apply);
         LogInfo("ResolutionWidget::DrawAutoApplyCheckbox() - Auto-apply changes set to: %s",
                 auto_apply ? "true" : "false");
@@ -161,7 +161,7 @@ void ResolutionWidget::DrawAutoApplyCheckbox(display_commander::ui::IImGuiWrappe
 
 void ResolutionWidget::DrawAutoApplyOnStart(display_commander::ui::IImGuiWrapper& imgui) {
     bool auto_apply_on_start = g_resolution_settings->GetAutoApplyOnStart();
-    if (imgui.Checkbox("Auto-apply on game start", &auto_apply_on_start)) {
+    if (imgui.Checkbox("游戏开始时自动应用", &auto_apply_on_start)) {
         g_resolution_settings->SetAutoApplyOnStart(auto_apply_on_start);
         LogInfo("ResolutionWidget::DrawAutoApplyOnStart() - Auto-apply on start set to: %s",
                 auto_apply_on_start ? "true" : "false");
@@ -275,7 +275,7 @@ void ResolutionWidget::DrawDisplaySelector(display_commander::ui::IImGuiWrapper&
     }
     imgui.PopID();
     imgui.SameLine();
-    imgui.Text("Display");
+    imgui.Text("显示");
 }
 
 void ResolutionWidget::DrawResolutionSelector(display_commander::ui::IImGuiWrapper& imgui) {
@@ -306,7 +306,7 @@ void ResolutionWidget::DrawResolutionSelector(display_commander::ui::IImGuiWrapp
     }
     imgui.PopID();
     imgui.SameLine();
-    imgui.Text("Resolution");
+    imgui.Text("分辨率");
 }
 
 void ResolutionWidget::DrawRefreshRateSelector(display_commander::ui::IImGuiWrapper& imgui) {
@@ -336,7 +336,7 @@ void ResolutionWidget::DrawRefreshRateSelector(display_commander::ui::IImGuiWrap
     }
     imgui.PopID();
     imgui.SameLine();
-    imgui.Text("Refresh Rate");
+    imgui.Text("刷新率");
 }
 
 void ResolutionWidget::DrawActionButtons(display_commander::ui::IImGuiWrapper& imgui) {
@@ -400,13 +400,13 @@ void ResolutionWidget::DrawActionButtons(display_commander::ui::IImGuiWrapper& i
 
         imgui.TextColored(ImVec4(1.0f, 1.0f, 0.0f, 1.0f), "● %s -> %s", saved_str.c_str(), current_str.c_str());
     } else {
-        imgui.TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "● Settings saved");
+        imgui.TextColored(ImVec4(0.5f, 1.0f, 0.5f, 1.0f), "● 设置已保存");
     }
 
     imgui.Spacing();
 
     // Apply button
-    if (imgui.Button("Apply Resolution")) {
+    if (imgui.Button("应用分辨率")) {
         // Store pending resolution for confirmation
         if (!resolution_data_.empty() && !refresh_data_.empty()) {
             // Store the current resolution before changing
@@ -450,7 +450,7 @@ void ResolutionWidget::DrawActionButtons(display_commander::ui::IImGuiWrapper& i
 
     // Save button
     if (display_settings.IsDirty()) {
-        if (imgui.Button("Save Settings")) {
+        if (imgui.Button("保存设置")) {
             display_settings.SaveCurrentState();
             display_settings.Save();
         }
@@ -476,7 +476,7 @@ void ResolutionWidget::DrawActionButtons(display_commander::ui::IImGuiWrapper& i
         }
     } else {
         imgui.PushStyleColor(ImGuiCol_Button, ImVec4(0.5f, 0.5f, 0.5f, 1.0f));
-        imgui.Button("Reset");
+        imgui.Button("重置");
         imgui.PopStyleColor();
     }
 }
@@ -1138,7 +1138,7 @@ std::string ResolutionWidget::FormatOriginalSettingsString() const {
 }
 
 void ResolutionWidget::DrawOriginalSettingsInfo(display_commander::ui::IImGuiWrapper& imgui) {
-    imgui.TextColored(ImVec4(0.7f, 0.9f, 0.7f, 1.0f), "Original Settings:");
+    imgui.TextColored(ImVec4(0.7f, 0.9f, 0.7f, 1.0f), "初始设置:");
     imgui.SameLine();
 
     // Get the currently selected display
@@ -1187,7 +1187,7 @@ void ResolutionWidget::DrawOriginalSettingsInfo(display_commander::ui::IImGuiWra
 
 void ResolutionWidget::DrawAutoRestoreCheckbox(display_commander::ui::IImGuiWrapper& imgui) {
     bool auto_restore = s_auto_restore_resolution_on_close.load();
-    if (imgui.Checkbox("Auto-restore on exit", &auto_restore)) {
+    if (imgui.Checkbox("退出时自动恢复", &auto_restore)) {
         s_auto_restore_resolution_on_close.store(auto_restore);
     }
     if (imgui.IsItemHovered()) {
@@ -1202,7 +1202,7 @@ void ResolutionWidget::DrawHdrSection(display_commander::ui::IImGuiWrapper& imgu
     bool hdr_enabled = false;
     bool got_state = display_commander::display::hdr_control::GetHdrStateForDisplayIndex(actual_display, &hdr_supported,
                                                                                          &hdr_enabled);
-    if (imgui.Checkbox("Auto enable Windows HDR", &auto_hdr)) {
+    if (imgui.Checkbox("自动启用 Windows HDR", &auto_hdr)) {
         settings::g_mainTabSettings.auto_enable_windows_hdr.SetValue(auto_hdr);
 
         if (display_commander::display::hdr_control::SetHdrForDisplayIndex(actual_display, auto_hdr)) {
