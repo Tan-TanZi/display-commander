@@ -22,7 +22,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
 static void DrawDxgiOverlaySubsection(display_commander::ui::IImGuiWrapper& imgui) {
     imgui.Columns(1);
     imgui.Separator();
-    imgui.TextUnformatted("Refresh Rate");
+    imgui.TextUnformatted("刷新率");
     imgui.Columns(4, "overlay_checkboxes", false);
 
     const bool dxgi_detection_enabled =
@@ -95,7 +95,7 @@ static void DrawNvapiStatsOverlaySubsection(display_commander::ui::IImGuiWrapper
     imgui.Columns(1);
     imgui.Separator();
     imgui.TextWrapped(
-        "NVIDIA API stats");
+        "NVIDIA API统计数据");
     imgui.Columns(4, "overlay_checkboxes", false);
 
     const bool nvapi_initialized = nvapi::EnsureNvApiInitialized();
@@ -181,12 +181,12 @@ static void DrawImportantInfo_FpsCounterAndReset(display_commander::ui::IImGuiWr
     }
     imgui.TextUnformatted(local_text.c_str());
     imgui.PushStyleColor(ImGuiCol_Text, ui::colors::ICON_ACTION);
-    if (imgui.Button(ICON_FK_REFRESH " Reset Stats")) {
+    if (imgui.Button(ICON_FK_REFRESH " 重置统计")) {
         ::g_perf_reset_requested.store(true, std::memory_order_release);
     }
     imgui.PopStyleColor();
     if (imgui.IsItemHovered()) {
-        imgui.SetTooltipEx("Reset FPS/frametime statistics. Metrics are computed since reset.");
+        imgui.SetTooltipEx("重置FPS/帧时间统计数据。自重置后开始计算指标.");
     }
 }
 
@@ -375,14 +375,14 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         }
 
         (void)RadioSettingEnumWrapper(
-            settings::g_mainTabSettings.overlay_label_mode, "Overlay labels",
+            settings::g_mainTabSettings.overlay_label_mode, "覆盖标签",
             "How metric names appear on the OSD: no prefix, short tokens, or full phrases. Values "
             "use a second column when labels are on.",
             imgui, RadioSettingLayout::Horizontal);
 
         imgui.Separator();
 
-        imgui.TextUnformatted("FPS & core display");
+        imgui.TextUnformatted("FPS与核心显示");
         imgui.Columns(4, "overlay_checkboxes", false);
 
         bool show_playtime = settings::g_mainTabSettings.show_playtime.GetValue();
@@ -620,18 +620,18 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
 
         imgui.Columns(1);
         bool show_animation_error_nvapi = settings::g_mainTabSettings.show_overlay_nvapi_latency_jitter_abs.GetValue();
-        if (imgui.Checkbox("Animation error", &show_animation_error_nvapi)) {
+        if (imgui.Checkbox("动画错误", &show_animation_error_nvapi)) {
             settings::g_mainTabSettings.show_overlay_nvapi_latency_jitter_abs.SetValue(show_animation_error_nvapi);
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Computes animation error from frame-to-frame average changes in the NVAPI Reflex latency estimate "
-                "(overlay line). Requires Reflex latency reporting (NvAPI_D3D_GetLatency); not Intel PresentMon "
+                "根据NVAPI Reflex延迟估计中帧与帧之间的平均变化计算动画误差 "
+                "（叠加线）。需要Reflex延迟报告（NvAPI_D3D_GetLatency）；不适用于Intel PresentMon "
                 "MsAnimationError.");
         }
 
         imgui.Separator();
-        imgui.TextUnformatted("Misc");
+        imgui.TextUnformatted("杂项");
         imgui.Columns(4, "overlay_checkboxes", false);
 
         bool show_clock = settings::g_mainTabSettings.show_clock.GetValue();
@@ -656,14 +656,14 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         DrawDxgiOverlaySubsection(imgui);
 
         imgui.Spacing();
-        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_background_alpha, "Overlay Background Opacity",
+        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_background_alpha, "叠加背景透明度",
                                "%.2f", imgui)) {
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
                 "Controls the overlay background opacity. 0.0 = fully transparent, 1.0 = fully opaque.");
         }
-        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_chart_alpha, "Frame Chart Opacity", "%.2f",
+        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_chart_alpha, "框架图表透明度", "%.2f",
                                imgui)) {
         }
         if (imgui.IsItemHovered()) {
@@ -678,7 +678,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
                 "Controls the size of the frame time and refresh rate graphs in the overlay. "
                 "1.0x = default size (300x60px), 4.0x = maximum size (1200x240px).");
         }
-        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_graph_max_scale, "Graph Max Value Scale", "%.1fx",
+        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_graph_max_scale, "图形最大值比例", "%.1fx",
                                imgui)) {
         }
         if (imgui.IsItemHovered()) {
@@ -688,7 +688,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
                 "Lower values (2x-4x) show more detail for normal frame times. "
                 "Higher values (6x-10x) accommodate frame time spikes without clipping.");
         }
-        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_vertical_spacing, "Overlay Vertical Spacing",
+        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_vertical_spacing, "垂直叠加间距",
                                "%.0f px", imgui)) {
         }
         if (imgui.IsItemHovered()) {
@@ -697,7 +697,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
                 "0 aligns the window top edge with the top of the overlay area. "
                 "Positive moves down, negative moves up (e.g. to clear other on-screen text).");
         }
-        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_horizontal_spacing, "Overlay Horizontal Spacing",
+        if (SliderFloatSetting(settings::g_mainTabSettings.overlay_horizontal_spacing, "水平叠加间距",
                                "%.0f px", imgui)) {
         }
         if (imgui.IsItemHovered()) {
@@ -708,11 +708,11 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         }
 
         imgui.Separator();
-        imgui.TextUnformatted("Frame timing & graphs");
+        imgui.TextUnformatted("帧时序与图表");
         imgui.Columns(4, "overlay_checkboxes", false);
 
         bool show_frame_time_graph = settings::g_mainTabSettings.show_frame_time_graph.GetValue();
-        if (imgui.Checkbox("Show frame time graph", &show_frame_time_graph)) {
+        if (imgui.Checkbox("显示帧时间图", &show_frame_time_graph)) {
             settings::g_mainTabSettings.show_frame_time_graph.SetValue(show_frame_time_graph);
         }
         if (imgui.IsItemHovered()) {
@@ -721,7 +721,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         imgui.NextColumn();
 
         bool show_frame_time_stats = settings::g_mainTabSettings.show_frame_time_stats.GetValue();
-        if (imgui.Checkbox("Show frame time stats", &show_frame_time_stats)) {
+        if (imgui.Checkbox("显示帧时间统计", &show_frame_time_stats)) {
             settings::g_mainTabSettings.show_frame_time_stats.SetValue(show_frame_time_stats);
         }
         if (imgui.IsItemHovered()) {
@@ -730,7 +730,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         imgui.NextColumn();
 
         bool show_native_frame_time_graph = settings::g_mainTabSettings.show_native_frame_time_graph.GetValue();
-        if (imgui.Checkbox("Show native frame time graph", &show_native_frame_time_graph)) {
+        if (imgui.Checkbox("显示本机帧时间图表", &show_native_frame_time_graph)) {
             settings::g_mainTabSettings.show_native_frame_time_graph.SetValue(show_native_frame_time_graph);
         }
         if (imgui.IsItemHovered()) {
@@ -741,7 +741,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         imgui.NextColumn();
 
         bool show_frame_timeline_bar = settings::g_mainTabSettings.show_frame_timeline_bar.GetValue();
-        if (imgui.Checkbox("Show frame timeline bar", &show_frame_timeline_bar)) {
+        if (imgui.Checkbox("显示帧时间轴栏", &show_frame_timeline_bar)) {
             settings::g_mainTabSettings.show_frame_timeline_bar.SetValue(show_frame_timeline_bar);
         }
         if (imgui.IsItemHovered()) {
