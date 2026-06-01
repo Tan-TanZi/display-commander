@@ -225,7 +225,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
     imgui.Separator();
     imgui.Spacing();
 
-    imgui.Text("Native Frame Time Graph");
+    imgui.Text("原生帧时间图");
     if (imgui.IsItemHovered()) {
         imgui.SetTooltipEx(
             "Shows frame times for frames actually displayed via native swapchain Present when limit real frames "
@@ -239,7 +239,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
 
     std::ostringstream oss;
 
-    oss << "Present Duration: " << std::fixed << std::setprecision(3)
+    oss << "当前时长: " << std::fixed << std::setprecision(3)
         << (1.0 * ::g_present_duration_ns.load() / utils::NS_TO_MS) << " ms";
     imgui.TextUnformatted(oss.str().c_str());
     imgui.SameLine();
@@ -247,7 +247,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
 
     oss.str("");
     oss.clear();
-    oss << "Frame Duration: " << std::fixed << std::setprecision(3)
+    oss << "帧持续时间: " << std::fixed << std::setprecision(3)
         << (1.0 * ::g_frame_time_ns.load() / utils::NS_TO_MS) << " ms";
     imgui.TextUnformatted(oss.str().c_str());
     imgui.SameLine();
@@ -294,7 +294,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
 
     oss.str("");
     oss.clear();
-    oss << "Simulation Duration: " << std::fixed << std::setprecision(3)
+    oss << "仿真时长: " << std::fixed << std::setprecision(3)
         << (1.0 * ::g_simulation_duration_ns.load() / utils::NS_TO_MS) << " ms";
     imgui.TextUnformatted(oss.str().c_str());
     imgui.SameLine();
@@ -302,7 +302,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
 
     oss.str("");
     oss.clear();
-    oss << "Render Submit Duration: " << std::fixed << std::setprecision(3)
+    oss << "渲染提交持续时间: " << std::fixed << std::setprecision(3)
         << (1.0 * ::g_render_submit_duration_ns.load() / utils::NS_TO_MS) << " ms";
     imgui.TextUnformatted(oss.str().c_str());
     imgui.SameLine();
@@ -310,7 +310,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
 
     oss.str("");
     oss.clear();
-    oss << "Reshade Overhead Duration: " << std::fixed << std::setprecision(3)
+    oss << "重着色开销持续时间: " << std::fixed << std::setprecision(3)
         << ((1.0 * ::g_reshade_overhead_duration_ns.load() - ::fps_sleep_before_on_present_ns.load()
              - ::fps_sleep_after_on_present_ns.load())
             / utils::NS_TO_MS)
@@ -321,7 +321,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
 
     oss.str("");
     oss.clear();
-    oss << "FPS Limiter Sleep Duration (before onPresent): " << std::fixed << std::setprecision(3)
+    oss << "FPS限制器休眠时长（onPresent之前）: " << std::fixed << std::setprecision(3)
         << (1.0 * ::fps_sleep_before_on_present_ns.load() / utils::NS_TO_MS) << " ms";
     imgui.TextUnformatted(oss.str().c_str());
     imgui.SameLine();
@@ -329,7 +329,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
 
     oss.str("");
     oss.clear();
-    oss << "FPS Limiter Sleep Duration (after onPresent): " << std::fixed << std::setprecision(3)
+    oss << "FPS限制器休眠时长（onPresent之后）: " << std::fixed << std::setprecision(3)
         << (1.0 * ::fps_sleep_after_on_present_ns.load() / utils::NS_TO_MS) << " ms";
     imgui.TextUnformatted(oss.str().c_str());
     imgui.SameLine();
@@ -352,7 +352,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
 
         static double sim_start_to_present_latency_ms = 0.0;
         sim_start_to_present_latency_ms = (sim_start_to_present_latency_ms * 0.99 + latency_ms * 0.01);
-        oss << "Sim Start to Present Latency: " << std::fixed << std::setprecision(3) << sim_start_to_present_latency_ms
+        oss << "仿真启动至画面延迟: " << std::fixed << std::setprecision(3) << sim_start_to_present_latency_ms
             << " ms";
         imgui.TextUnformatted(oss.str().c_str());
         imgui.SameLine();
