@@ -255,21 +255,21 @@ void InitializeNewUI() {
     modules::InitializeModuleRegistry();
 
     g_tab_manager.AddTab(
-        "Main", "main_new",
+        "主页", "main_new",
         [](reshade::api::effect_runtime* runtime) {
             try {
                 display_commander::ui::ImGuiWrapperReshade wrapper;
                 ui::new_ui::DrawMainNewTab(ui::new_ui::GetGraphicsApiFromRuntime(runtime), wrapper, runtime);
             } catch (const std::exception& e) {
-                LogError("Error drawing main new tab: %s", e.what());
+                LogError("绘制主页标签时发生了错误: %s", e.what());
             } catch (...) {
-                LogError("Unknown error drawing main new tab");
+                LogError("绘制主页标签时发生未知错误");
             }
         },
         false);  // Main tab is not advanced
 
     g_tab_manager.AddTab(
-        "Advanced", "advanced",
+        "高级", "advanced",
         [](reshade::api::effect_runtime* runtime) {
             try {
                 display_commander::ui::GraphicsApi api = display_commander::ui::GraphicsApi::Unknown;
@@ -280,24 +280,24 @@ void InitializeNewUI() {
                 display_commander::ui::ImGuiWrapperReshade wrapper;
                 ui::new_ui::DrawAdvancedTab(api, wrapper);
             } catch (const std::exception& e) {
-                LogError("Error drawing advanced tab: %s", e.what());
+                LogError("绘制高级标签时发生了错误: %s", e.what());
             } catch (...) {
-                LogError("Unknown error drawing advanced tab");
+                LogError("绘制高级标签时发生未知错误");
             }
         },
         true);  // Advanced tab is advanced
 
     g_tab_manager.AddTab(
-        "Hotkeys", "hotkeys",
+        "快捷键", "hotkeys",
         [](reshade::api::effect_runtime* runtime) {
             (void)runtime;
             try {
                 display_commander::ui::ImGuiWrapperReshade wrapper;
                 ui::new_ui::DrawHotkeysTab(wrapper);
             } catch (const std::exception& e) {
-                LogError("Error drawing hotkeys tab: %s", e.what());
+                LogError("绘制热键标签时出错: %s", e.what());
             } catch (...) {
-                LogError("Unknown error drawing hotkeys tab");
+                LogError("绘制热键标签时出现未知错误");
             }
         },
         true);  // Hotkeys tab: visibility gated by show_hotkeys_tab (default on)
