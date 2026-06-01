@@ -31,7 +31,7 @@ static constexpr size_t kMainTabOptionalPanelsDrawOrderCount =
 
 void DrawMainTabOptionalPanelsAdvancedSettingsUi(display_commander::ui::IImGuiWrapper& imgui) {
     imgui.Spacing();
-    imgui.TextUnformatted("Main tab optional panels");
+    imgui.TextUnformatted("主选项卡可选面板");
     if (imgui.IsItemHovered()) {
         imgui.SetTooltipEx(
             "Show or hide collapsible sections on the Main tab (drawn after the Modules section). "
@@ -40,7 +40,7 @@ void DrawMainTabOptionalPanelsAdvancedSettingsUi(display_commander::ui::IImGuiWr
     imgui.Indent();
 
     if (modules::IsModuleEnabled("audio")) {
-        if (CheckboxSetting(settings::g_mainTabSettings.show_main_tab_audio_control, "Show Audio Control", imgui)) {
+        if (CheckboxSetting(settings::g_mainTabSettings.show_main_tab_audio_control, "显示音频控制", imgui)) {
             LogInfo("Show main tab Audio Control %s",
                     settings::g_mainTabSettings.show_main_tab_audio_control.GetValue() ? "on" : "off");
         }
@@ -53,7 +53,7 @@ void DrawMainTabOptionalPanelsAdvancedSettingsUi(display_commander::ui::IImGuiWr
     if (imgui.IsItemHovered()) {
         imgui.SetTooltipEx("Minimize, focus, close, open game folder, config, log, etc.");
     }
-    if (CheckboxSetting(settings::g_mainTabSettings.show_main_tab_input_control, "Show Input Control", imgui)) {
+    if (CheckboxSetting(settings::g_mainTabSettings.show_main_tab_input_control, "显示输入控制", imgui)) {
         LogInfo("Show main tab Input Control %s",
                 settings::g_mainTabSettings.show_main_tab_input_control.GetValue() ? "on" : "off");
     }
@@ -61,7 +61,7 @@ void DrawMainTabOptionalPanelsAdvancedSettingsUi(display_commander::ui::IImGuiWr
         imgui.SetTooltipEx(
             "Keyboard/mouse/gamepad blocking, clip cursor, and gamepad remapping toggle (same as Controller tab).");
     }
-    if (CheckboxSetting(settings::g_mainTabSettings.show_main_tab_dlss_control, "Show DLSS Control", imgui)) {
+    if (CheckboxSetting(settings::g_mainTabSettings.show_main_tab_dlss_control, "显示DLSS控制", imgui)) {
         LogInfo("Show main tab DLSS Control %s",
                 settings::g_mainTabSettings.show_main_tab_dlss_control.GetValue() ? "on" : "off");
     }
@@ -70,7 +70,7 @@ void DrawMainTabOptionalPanelsAdvancedSettingsUi(display_commander::ui::IImGuiWr
             "DLSS / DLSS-G / RR status, preset overrides, DLL overrides, and related controls (moved out of Display "
             "Settings). Includes registry DLSS indicator, tracked module paths, and CreateFeature-seen blocks.");
     }
-    if (CheckboxSetting(settings::g_mainTabSettings.show_main_tab_dxgi_control, "Show DXGI Control", imgui)) {
+    if (CheckboxSetting(settings::g_mainTabSettings.show_main_tab_dxgi_control, "显示DXGI控件", imgui)) {
         LogInfo("Show main tab DXGI Control %s",
                 settings::g_mainTabSettings.show_main_tab_dxgi_control.GetValue() ? "on" : "off");
     }
