@@ -136,10 +136,10 @@ void DrawDxgiOverlaySubsection(display_commander::ui::IImGuiWrapper& imgui) {
                 imgui.SameLine(0.0f, imgui.GetStyle().ItemInnerSpacing.x * 2.0f);
             }
             if (dxgi_hz > 0.0) {
-                imgui.Text("Refresh rate: %.1f Hz (min %.1f / max %.1f)", dxgi_hz, dxgi_stats.min_rate,
+                imgui.Text("刷新率: %.1f Hz (min %.1f / max %.1f)", dxgi_hz, dxgi_stats.min_rate,
                            dxgi_stats.max_rate);
             } else {
-                imgui.TextColored(ui::colors::TEXT_DIMMED, "Refresh rate: -- Hz");
+                imgui.TextColored(ui::colors::TEXT_DIMMED, "刷新率: -- Hz");
             }
             if (imgui.IsItemHovered()) {
                 imgui.SetTooltipEx(
@@ -601,19 +601,19 @@ void DrawMainNewTab(display_commander::ui::GraphicsApi api, display_commander::u
         //imgui.SameLine();
         //imgui.TextColored(ui::colors::TEXT_LABEL, "Support the project:");
         imgui.PushStyleColor(ImGuiCol_Text, ui::colors::ICON_SPECIAL);
-        if (imgui.Button(ICON_FK_PLUS " Buy me a coffee on Ko-fi")) {
+        if (imgui.Button(ICON_FK_PLUS " 在Ko-fi网站上给我买杯咖啡~")) {
             ShellExecuteA(nullptr, "open", "https://ko-fi.com/pmnox", nullptr, nullptr, SW_SHOW);
         }
         imgui.PopStyleColor();
         if (imgui.IsItemHovered()) {
-            imgui.SetTooltipEx("Support Display Commander development with a coffee!");
+            imgui.SetTooltipEx("来杯咖啡，支持Display Commander的开发！");
         }
     }
 
     // Display Settings Section
     g_rendering_ui_section.store("ui:tab:main_new:display_settings", std::memory_order_release);
     ui::colors::PushHeaderColors(&imgui);
-    const bool display_settings_open = imgui.CollapsingHeader("Display Settings", ImGuiTreeNodeFlags_DefaultOpen);
+    const bool display_settings_open = imgui.CollapsingHeader("显示设置", ImGuiTreeNodeFlags_DefaultOpen);
     ui::colors::PopCollapsingHeaderColors(&imgui);
     if (display_settings_open) {
         imgui.Indent();
@@ -626,7 +626,7 @@ void DrawMainNewTab(display_commander::ui::GraphicsApi api, display_commander::u
     // Monitor/Display Resolution Settings Section
     g_rendering_ui_section.store("ui:tab:main_new:resolution", std::memory_order_release);
     ui::colors::PushHeaderColors(&imgui);
-    const bool resolution_control_open = imgui.CollapsingHeader("Resolution Control", ImGuiTreeNodeFlags_None);
+    const bool resolution_control_open = imgui.CollapsingHeader("分辨率控制", ImGuiTreeNodeFlags_None);
     ui::colors::PopCollapsingHeaderColors(&imgui);
     if (resolution_control_open) {
         imgui.Indent();
@@ -638,7 +638,7 @@ void DrawMainNewTab(display_commander::ui::GraphicsApi api, display_commander::u
 
     g_rendering_ui_section.store("ui:tab:main_new:window_control", std::memory_order_release);
     ui::colors::PushHeaderColors(&imgui);
-    const bool window_control_open = imgui.CollapsingHeader("Window Control", ImGuiTreeNodeFlags_None);
+    const bool window_control_open = imgui.CollapsingHeader("窗口控制", ImGuiTreeNodeFlags_None);
     ui::colors::PopCollapsingHeaderColors(&imgui);
     if (window_control_open) {
         imgui.Indent();
@@ -1039,8 +1039,8 @@ void DrawAdhdMultiMonitorControls(display_commander::ui::IImGuiWrapper& imgui) {
     imgui.BeginGroup();
     // Use CheckboxSetting so the checkbox always reflects the current setting (e.g. when toggled via hotkey)
     if (CheckboxSetting(settings::g_mainTabSettings.adhd_single_monitor_enabled_for_game_display,
-                        "Black curtain (game display)", imgui)) {
-        LogInfo("Black curtain (game display) %s",
+                        "黑色幕布（游戏展示用）", imgui)) {
+        LogInfo("黑色幕布（游戏展示用） %s",
                 settings::g_mainTabSettings.adhd_single_monitor_enabled_for_game_display.GetValue() ? "enabled"
                                                                                                     : "disabled");
     }
