@@ -643,13 +643,13 @@ void DrawMainNewTab(display_commander::ui::GraphicsApi api, display_commander::u
     if (window_control_open) {
         imgui.Indent();
 
-        CheckboxSetting(settings::g_advancedTabSettings.prevent_always_on_top, "Prevent Always On Top", imgui);
+        CheckboxSetting(settings::g_advancedTabSettings.prevent_always_on_top, "防止窗口置顶", imgui);
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx("Prevents windows from becoming always on top, even if they are moved or resized.");
         }
 
         imgui.SameLine();
-        CheckboxSetting(settings::g_advancedTabSettings.prevent_minimize, "Prevent Minimize", imgui);
+        CheckboxSetting(settings::g_advancedTabSettings.prevent_minimize, "防止最小化", imgui);
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx("Prevents the game window from being minimized (e.g. via taskbar or system menu).");
         }
@@ -658,7 +658,7 @@ void DrawMainNewTab(display_commander::ui::GraphicsApi api, display_commander::u
         // Continue rendering in background (also labeled "Fake Fullscreen" for discoverability)
         static bool continue_rendering_changed = false;
         if (CheckboxSetting(settings::g_advancedTabSettings.continue_rendering,
-                            "Continue Rendering in Background (Fake Fullscreen)", imgui)) {
+                            "继续在后台渲染（模拟全屏）", imgui)) {
             continue_rendering_changed = true;
             bool new_value = settings::g_advancedTabSettings.continue_rendering.GetValue();
             LogInfo("Continue rendering in background %s", new_value ? "enabled" : "disabled");
@@ -697,7 +697,7 @@ void DrawMainNewTab(display_commander::ui::GraphicsApi api, display_commander::u
 */
         // Prevent display sleep & screensaver mode
         if (RadioSettingEnumWrapper(
-                settings::g_mainTabSettings.screensaver_mode, "Prevent display sleep & screensaver",
+                settings::g_mainTabSettings.screensaver_mode, "防止显示器休眠和屏幕保护",
                 "Controls display sleep and screensaver while the game is running:\n\n"
                 "- Default: Preserves original game behavior\n"
                 "- In foreground: Prevents display sleep & screensaver while the game window is focused\n"
