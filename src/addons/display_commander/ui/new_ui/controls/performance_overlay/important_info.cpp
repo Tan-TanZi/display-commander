@@ -159,7 +159,7 @@ static void DrawNvapiStatsOverlaySubsection(display_commander::ui::IImGuiWrapper
     }
     if (imgui.IsItemHovered()) {
         imgui.SetTooltipEx(
-            "Shows NVIDIA Reflex NVAPI latency stats (PC latency and GPU frame time) on the OSD.\n"
+            "Shows NVIDIA Reflex NVAPI latency stats (PC latency and GPU ) on the OSD.\n"
             "Requires a D3D11/D3D12 device with Reflex latency reporting available. Uses NvAPI_D3D_GetLatency, "
             "which may add minor overhead when enabled.");
     }*/
@@ -207,7 +207,7 @@ static void DrawImportantInfo_FrameTimeGraphContent(display_commander::ui::IImGu
             imgui.TextUnformatted(ICON_FK_OK);
             imgui.PopStyleColor();
             imgui.SameLine();
-            imgui.TextColored(ui::colors::TEXT_SUCCESS, "GPU Fence Active");
+            imgui.TextColored(ui::colors::TEXT_SUCCESS, "GPU同步生效");
             imgui.Unindent();
         }
     }
@@ -668,14 +668,14 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Controls opacity of the frame time and refresh rate chart backgrounds. 0.0 = fully transparent, "
+                "Controls opacity of the  and refresh rate chart backgrounds. 0.0 = fully transparent, "
                 "1.0 = fully opaque. Chart lines remain fully visible.");
         }
         if (SliderFloatSetting(settings::g_mainTabSettings.overlay_graph_scale, "Graph Size Scale", "%.1fx", imgui)) {
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Controls the size of the frame time and refresh rate graphs in the overlay. "
+                "Controls the size of the  and refresh rate graphs in the overlay. "
                 "1.0x = default size (300x60px), 4.0x = maximum size (1200x240px).");
         }
         if (SliderFloatSetting(settings::g_mainTabSettings.overlay_graph_max_scale, "图形最大值比例", "%.1fx",
@@ -683,10 +683,10 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Controls the maximum Y-axis value for the frame time and refresh rate graphs. "
-                "The graph will scale from 0ms to (average frame time × this multiplier). "
-                "Lower values (2x-4x) show more detail for normal frame times. "
-                "Higher values (6x-10x) accommodate frame time spikes without clipping.");
+                "Controls the maximum Y-axis value for the  and refresh rate graphs. "
+                "The graph will scale from 0ms to (average  × this multiplier). "
+                "Lower values (2x-4x) show more detail for normal s. "
+                "Higher values (6x-10x) accommodate  spikes without clipping.");
         }
         if (SliderFloatSetting(settings::g_mainTabSettings.overlay_vertical_spacing, "垂直叠加间距",
                                "%.0f px", imgui)) {
@@ -716,7 +716,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
             settings::g_mainTabSettings.show_frame_time_graph.SetValue(show_frame_time_graph);
         }
         if (imgui.IsItemHovered()) {
-            imgui.SetTooltipEx("Shows a graph of frame times in the overlay.");
+            imgui.SetTooltipEx("Shows a graph of s in the overlay.");
         }
         imgui.NextColumn();
 
@@ -725,7 +725,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
             settings::g_mainTabSettings.show_frame_time_stats.SetValue(show_frame_time_stats);
         }
         if (imgui.IsItemHovered()) {
-            imgui.SetTooltipEx("Shows frame time statistics (avg, deviation, min, max) in the overlay.");
+            imgui.SetTooltipEx("Shows  statistics (avg, deviation, min, max) in the overlay.");
         }
         imgui.NextColumn();
 
@@ -735,7 +735,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Shows a graph of native frame times (frames shown to display via native swapchain Present) in the "
+                "Shows a graph of native s (frames shown to display via native swapchain Present) in the "
                 "overlay.\nOnly available when limit real frames is enabled.");
         }
         imgui.NextColumn();
@@ -746,7 +746,7 @@ static void DrawImportantInfo_OverlayControls(display_commander::ui::IImGuiWrapp
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Shows a compact frame timeline in the overlay (Simulation, Render Submit, Present, etc. as bars). "
+                "Shows a compact line in the overlay (Simulation, Render Submit, Present, etc. as bars). "
                 "Updates every 1 s.");
         }
         imgui.NextColumn();
@@ -768,7 +768,7 @@ void DrawImportantInfo(display_commander::ui::IImGuiWrapper& imgui) {
     imgui.Indent();
     g_rendering_ui_section.store("ui:tab:main_new:frame_time_graph", std::memory_order_release);
     ui::colors::PushHeader2Colors(&imgui);
-    const bool frame_time_graph_open = imgui.CollapsingHeader("Frame Time Graph", ImGuiTreeNodeFlags_None);
+    const bool frame_time_graph_open = imgui.CollapsingHeader("帧时间图", ImGuiTreeNodeFlags_None);
     ui::colors::PopCollapsingHeaderColors(&imgui);
     if (frame_time_graph_open) {
         imgui.Indent();
