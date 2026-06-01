@@ -96,10 +96,10 @@ void UpdateFrameTimelineCache() {
 
     s_timeline_phases.clear();
     if (sim_end_ms > sim_start_ms) {
-        s_timeline_phases.push_back({"Simulation", sim_start_ms, sim_end_ms, col_sim});
+        s_timeline_phases.push_back({"模拟", sim_start_ms, sim_end_ms, col_sim});
     }
     if (render_end_ms > sim_end_ms) {
-        s_timeline_phases.push_back({"Render Submit", sim_end_ms, render_end_ms, col_render});
+        s_timeline_phases.push_back({"渲染提交", sim_end_ms, render_end_ms, col_render});
     }
     const double reshade_end_ms =
         (fd.sleep_pre_present_start_time_ns.load() > 0) ? sleep_pre_start_ms : present_start_ms;
@@ -107,13 +107,13 @@ void UpdateFrameTimelineCache() {
         s_timeline_phases.push_back({"ReShade", render_end_ms, reshade_end_ms, col_reshade});
     }
     if (sleep_pre_end_ms > sleep_pre_start_ms) {
-        s_timeline_phases.push_back({"FPS Sleep (before)", sleep_pre_start_ms, sleep_pre_end_ms, col_sleep});
+        s_timeline_phases.push_back({"FPS 睡眠（之前）", sleep_pre_start_ms, sleep_pre_end_ms, col_sleep});
     }
     if (present_end_ms > present_start_ms) {
         s_timeline_phases.push_back({"Present", present_start_ms, present_end_ms, col_present});
     }
     if (sleep_post_end_ms > sleep_post_start_ms) {
-        s_timeline_phases.push_back({"FPS Sleep (after)", sleep_post_start_ms, sleep_post_end_ms, col_sleep});
+        s_timeline_phases.push_back({"FPS（每秒帧数）休眠（之后）", sleep_post_start_ms, sleep_post_end_ms, col_sleep});
     }
     if (has_gpu && gpu_end_ms > present_start_ms) {
         s_timeline_phases.push_back({"GPU", present_start_ms, gpu_end_ms, col_gpu});
