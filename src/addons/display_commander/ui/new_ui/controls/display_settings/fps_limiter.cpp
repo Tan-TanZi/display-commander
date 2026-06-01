@@ -36,9 +36,9 @@ void DrawNvllNativeReflexStatusOnSameLine(display_commander::ui::IImGuiWrapper& 
 
     imgui.SameLine();
     if (status_ok) {
-        imgui.TextColored(ui::colors::ICON_SUCCESS, "Status: OK");
+        imgui.TextColored(ui::colors::ICON_SUCCESS, "状态：正常");
     } else {
-        imgui.TextColored(ui::colors::ICON_ERROR, "Status: FAIL");
+        imgui.TextColored(ui::colors::ICON_ERROR, "状态：失败");
     }
     if (imgui.IsItemHovered()) {
         std::ostringstream tt;
@@ -153,7 +153,7 @@ void DrawQuickFpsLimitChanger(display_commander::ui::IImGuiWrapper& imgui) {
     if (y <= 0) {
         // Refresh rate unknown: show fixed presets only (no fallback)
         const float presets[] = {0.0f, 30.0f, 60.0f, 120.0f, 144.0f};
-        const char* labels[] = {"No Limit", "30", "60", "120", "144"};
+        const char* labels[] = {"无限制", "30", "60", "120", "144"};
         for (size_t i = 0; i < sizeof(presets) / sizeof(presets[0]); ++i) {
             if (i > 0) imgui.SameLine();
             bool selected =
@@ -165,7 +165,7 @@ void DrawQuickFpsLimitChanger(display_commander::ui::IImGuiWrapper& imgui) {
             if (selected) ui::colors::PopSelectedButtonColors(&imgui);
         }
         // Reflex rate not detected error
-        imgui.TextColored(ui::colors::TEXT_DIMMED, "Reflex rate not detected: TODO FIXME");
+        imgui.TextColored(ui::colors::TEXT_DIMMED, "未检测到反射率：TODO 待修复");
         return;
     }
 
@@ -176,7 +176,7 @@ void DrawQuickFpsLimitChanger(display_commander::ui::IImGuiWrapper& imgui) {
         if (enabled_experimental_features) {
             bool selected = (std::fabs(settings::g_mainTabSettings.fps_limit.GetValue() - 0.0f) <= selected_epsilon);
             if (selected) ui::colors::PushSelectedButtonColors(&imgui);
-            if (imgui.Button("No Limit")) {
+            if (imgui.Button("无限制")) {
                 settings::g_mainTabSettings.fps_limit.SetValue(0.0f);
             }
             if (selected) ui::colors::PopSelectedButtonColors(&imgui);
@@ -230,7 +230,7 @@ void DrawQuickFpsLimitChanger(display_commander::ui::IImGuiWrapper& imgui) {
                 (std::fabs(settings::g_mainTabSettings.fps_limit.GetValue() - precise_target) <= selected_epsilon);
 
             if (selected) ui::colors::PushSelectedButtonColors(&imgui);
-            if (imgui.Button("VRR Cap")) {
+            if (imgui.Button("VRR 上限")) {
                 double precise_target_val = gsync_target;  // do not round on apply
                 float target_fps = static_cast<float>(precise_target_val < 1.0 ? 1.0 : precise_target_val);
                 settings::g_mainTabSettings.fps_limit.SetValue(target_fps);
@@ -262,8 +262,8 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
     CALL_GUARD_NO_TS();
     imgui.Spacing();
 
-    const char* mode_items[] = {"Default", "NVIDIA Reflex (DX11/DX12 only, Vulkan requires native reflex)",
-                                "Sync to Display Refresh Rate (fraction of monitor refresh rate) Non-VRR"};
+    const char* mode_items[] = {"默认", "NVIDIA Reflex（仅限DX11/DX12，Vulkan需要原生反射）",
+                                "同步到显示器刷新率（占显示器刷新率的比例）非可变刷新率（VRR）"};
 
     int current_item = settings::g_mainTabSettings.fps_limiter_mode.GetValue();
     if (current_item < 0 || current_item > 2) {
@@ -290,7 +290,7 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
         LogInfo("FPS Limiter: %s", fps_limit_enabled ? "enabled" : "disabled (no limiting)");
     }
     if (imgui.IsItemHovered()) {
-        imgui.SetTooltipEx("When checked, the selected mode is active. When unchecked, no FPS limiting.");
+        imgui.SetTooltipEx("勾选时，所选模式处于活动状态。未勾选时，无FPS限制。");
     }
     imgui.SameLine();
     if (!fps_limit_enabled) {
@@ -299,14 +299,14 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
     float current_value = settings::g_mainTabSettings.fps_limit.GetValue();
     const char* fmt = (current_value > 0.0f) ? "%.3f FPS" : "No Limit";
     imgui.SetNextItemWidth(get_fps_limiter_control_width());
-    if (SliderFloatSetting(settings::g_mainTabSettings.fps_limit, "FPS Limit", fmt, imgui)) {
+    if (SliderFloatSetting(settings::g_mainTabSettings.fps_limit, "帧率限制", fmt, imgui)) {
     }
     float cur_limit = settings::g_mainTabSettings.fps_limit.GetValue();
     if (cur_limit > 0.0f && cur_limit < 10.0f) {
         settings::g_mainTabSettings.fps_limit.SetValue(0.0f);
     }
     if (imgui.IsItemHovered()) {
-        imgui.SetTooltipEx("Set FPS limit for the game (0 = no limit). Now uses the new Custom FPS Limiter system.");
+        imgui.SetTooltipEx("为游戏设置FPS限制（0表示无限制）。现在使用新的自定义FPS限制系统。");
     }
     if (!fps_limit_enabled) {
         imgui.EndDisabled();
@@ -324,7 +324,7 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "When enabled, cap FPS when the game window is in the background. Slider sets the limit (default 60).");
+                "启用后，当游戏窗口处于后台时限制FPS。滑块可设置限制值（默认值为60）。");
         }
         imgui.SameLine();
         if (fps_limit_enabled && !settings::g_mainTabSettings.background_fps_enabled.GetValue()) {
@@ -341,8 +341,8 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "When enabled, caps FPS to the limit above when the game window is not in the foreground. Uses the "
-                "Custom FPS Limiter.");
+                "启用后，当游戏窗口不在前台时，将FPS限制在上述限制值。使用 "
+                "自定义FPS限制器。");
         }
     }
 
@@ -353,17 +353,17 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
         imgui.BeginDisabled();
     }
     imgui.SetNextItemWidth(get_fps_limiter_control_width());
-    if (imgui.Combo("FPS Limiter Mode", &current_item, mode_items, 3)) {
+    if (imgui.Combo("帧率限制模式", &current_item, mode_items, 3)) {
         settings::g_mainTabSettings.fps_limiter_mode.SetValue(current_item);
         s_fps_limiter_mode.store(static_cast<FpsLimiterMode>(current_item));
         FpsLimiterMode mode = s_fps_limiter_mode.load();
         if (mode == FpsLimiterMode::kReflex) {
-            LogInfo("FPS Limiter: Reflex");
+            LogInfo("FPS限制器：Reflex");
             settings::g_advancedTabSettings.reflex_auto_configure.SetValue(true);
         } else if (mode == FpsLimiterMode::kOnPresentSync) {
-            LogInfo("FPS Limiter: OnPresent Frame Synchronizer");
+            LogInfo("FPS限制器：OnPresent帧同步器");
         } else if (mode == FpsLimiterMode::kLatentSync) {
-            LogInfo("FPS Limiter: VBlank Scanline Sync for VSYNC-OFF or without VRR");
+            LogInfo("FPS限制器：VBlank扫描线同步，适用于未开启VSYNC或未使用VRR的情况");
         }
 
         if (mode == FpsLimiterMode::kReflex && prev_item != static_cast<int>(FpsLimiterMode::kReflex)) {
@@ -401,20 +401,20 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
             {
 
                 bool fg2_on = settings::g_mainTabSettings.fps_limiter_fg2_enabled.GetValue();
-                if (imgui.Checkbox("Experimental setting", &fg2_on)) {
+                if (imgui.Checkbox("实验设置", &fg2_on)) {
                     settings::g_mainTabSettings.fps_limiter_fg2_enabled.SetValue(fg2_on);
                    // LogInfo("2nd FPS limiter (FG): %s", fg2_on ? "on" : "off");
                 }
                 if (imgui.IsItemHovered()) {
                     imgui.SetTooltipEx(
-                        "DebugTabs-only: secondary pre-only pacer for generated frames on top of main limiter.");
+                        "仅限调试标签：在主限制器之上，为生成的帧提供次要的预处理限速器。");
                 }
             }
             if (current_preset == FpsLimiterPreset::kCustom || current_preset == FpsLimiterPreset::kLowLatencyNativePacingV2)
             {
                 imgui.SetNextItemWidth(220.f);
                 if (SliderFloatSetting(settings::g_mainTabSettings.fps_limiter_fg2_target_boost_percent,
-                                       "FG target boost", "%.1f %%", imgui)) {
+                                       "FG目标提升", "%.1f %%", imgui)) {
                 }
                 if (imgui.IsItemHovered()) {
                     imgui.SetTooltipEx(
@@ -457,19 +457,19 @@ void DrawDisplaySettings_FpsLimiter(display_commander::ui::IImGuiWrapper& imgui)
             imgui.Columns(2, "FpsLimiterDebugSummary", false);
             imgui.SetColumnWidth(0, debug_label_width);
 
-            imgui.Text("Active call sites:");
+            imgui.Text("活动调用站点：");
             imgui.NextColumn();
             imgui.Text("%zu / %zu", active_sites, static_cast<size_t>(kFpsLimiterCallSiteCount));
             imgui.NextColumn();
 
-            imgui.Text("Recent call sites (<=1s):");
+            imgui.Text("最近调用站点（<=1秒）:");
             imgui.NextColumn();
             imgui.Text("%zu / %zu", recent_sites, static_cast<size_t>(kFpsLimiterCallSiteCount));
             imgui.NextColumn();
             imgui.Columns(1);
 
             imgui.Separator();
-            imgui.TextUnformatted("Call site activity:");
+            imgui.TextUnformatted("呼叫站点活动：");
 
             imgui.Columns(2, "FpsLimiterDebugRows", false);
             imgui.SetColumnWidth(0, debug_label_width);
@@ -517,7 +517,7 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
         const reshade::api::device_api current_api = g_last_reshade_device_api.load();
         if (current_api == reshade::api::device_api::d3d9) {
             imgui.TextColored(ui::colors::TEXT_WARNING,
-                              ICON_FK_WARNING " Warning: Reflex does not work with Direct3D 9");
+                              ICON_FK_WARNING " 警告：Reflex无法与Direct3D 9兼容");
         }
         drawPclStatsCheckbox();
 
@@ -553,7 +553,7 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
                 show_delay_bias_debug = !show_delay_bias_debug;
             }
             if (imgui.IsItemHovered()) {
-                imgui.SetTooltipEx("Show delay_bias debug information");
+                imgui.SetTooltipEx("显示延迟偏差调试信息");
             }
 
             // Debug Info Window
@@ -571,20 +571,20 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
                 LONGLONG late_ns = late_amount_ns.load();
 
                 // Display ratio index and delay_bias
-                imgui.TextColored(ui::colors::TEXT_HIGHLIGHT, "Ratio Settings:");
+                imgui.TextColored(ui::colors::TEXT_HIGHLIGHT, "比率设置：");
                 imgui.Text("Ratio Index: %d", ratio_index);
                 float display_pct = (1.0f - delay_bias) * 100.0f;
                 float input_pct = delay_bias * 100.0f;
                 imgui.Text("Delay Bias: %.3f (%.1f%% Display / %.1f%% Input)", delay_bias, display_pct, input_pct);
 
                 imgui.Spacing();
-                imgui.TextColored(ui::colors::TEXT_HIGHLIGHT, "Frame Timing:");
+                imgui.TextColored(ui::colors::TEXT_HIGHLIGHT, "帧定时：");
                 if (frame_time_ns > 0) {
                     float frame_time_ms = frame_time_ns / 1'000'000.0f;
                     float target_fps = 1000.0f / frame_time_ms;
                     imgui.Text("Frame Time: %.3f ms (%.1f FPS)", frame_time_ms, target_fps);
                 } else {
-                    imgui.TextColored(ui::colors::TEXT_WARNING, "Frame Time: Not set (FPS limiter disabled?)");
+                    imgui.TextColored(ui::colors::TEXT_WARNING, "帧时间：未设置（FPS限制器已禁用？）");
                 }
 
                 imgui.Spacing();
@@ -606,7 +606,7 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
                 }
 
                 imgui.Spacing();
-                imgui.TextColored(ui::colors::TEXT_HIGHLIGHT, "Frame Timing (Raw):");
+                imgui.TextColored(ui::colors::TEXT_HIGHLIGHT, "帧定时（原始）：");
                 if (last_frame_end_ns > 0) {
                     LONGLONG now_ns = utils::get_now_ns();
                     LONGLONG time_since_last_frame_ns = now_ns - last_frame_end_ns;
@@ -643,8 +643,8 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Quick presets for FPS limiter when the game has native Reflex. DCPaceLock (q=1–3) is Display "
-                "Commander’s pacing for frame generation with lower latency. Custom allows manual configuration.");
+                "当游戏自带Reflex功能时，可快速预设FPS限制器。DCPaceLock（q=1–3）为显示模式 "
+                "Commander的帧生成步调具有较低的延迟。自定义功能允许手动配置。");
         }
 
         const bool show_custom_options = (preset == FpsLimiterPreset::kCustom);
@@ -672,19 +672,19 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
             }
             if (imgui.IsItemHovered()) {
                 imgui.SetTooltipEx(
-                    "When enabled with Frame Generation (DLSS-G) active, limits native (real) frame rate.\n"
-                    "Experimental; may improve frame pacing with FG.");
+                    "当启用帧生成（DLSS-G）功能时，会限制原生（真实）帧率。\n"
+                    "实验性；可能通过FG改善帧间节奏。");
             }
             {
                 imgui.Indent();
                 if (ComboSettingWrapper(settings::g_mainTabSettings.reflex_fps_limiter_max_queued_frames,
                                         "Max queued frames", imgui, 400.f)) {
-                    LogInfo("Max queued frames changed");
+                    LogInfo("最大排队帧数已更改");
                 }
                 if (imgui.IsItemHovered()) {
                     imgui.SetTooltipEx(
-                        "Max frames to queue when using Reflex markers as FPS limiter. Game default = no limit; 1–6 = "
-                        "limit.");
+                        "使用Reflex标记作为FPS限制器时，可排队的最大帧数。游戏默认值=无限制； 1–6 = "
+                        "限制。");
                 }
                 if (settings::g_mainTabSettings.reflex_fps_limiter_max_queued_frames.GetValue() > 0) imgui.BeginDisabled();
                 if (CheckboxSetting(settings::g_mainTabSettings.native_pacing_sim_start_only, "Native frame pacing", imgui)) {
@@ -705,9 +705,9 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
                 }
                 if (imgui.IsItemHovered()) {
                     imgui.SetTooltipEx(
-                        "When enabled, PRESENT_START is scheduled for (SIMULATION_START + N frame times).\n"
-                        "Improves frame pacing when using native frame pacing. Use the slider to set N (0 = no delay, "
-                        "1 = one frame, 0.5 = half frame, etc.).");
+                        "启用时，PRESENT_START 被安排在（SIMULATION_START + N帧时间）时执行。\n"
+                        "在使用原生帧速率调整时，可改善帧速率调整。使用滑块设置N（0=无延迟， "
+                        "1代表一帧，0.5代表半帧，以此类推。");
                 }
                 imgui.SameLine();
                 imgui.SetNextItemWidth(400.f);
@@ -715,7 +715,7 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
                                        imgui)) {
                 }
                 if (imgui.IsItemHovered()) {
-                    imgui.SetTooltipEx("Frames to delay PRESENT_START after SIMULATION_START (0–2). 0 = no delay.");
+                    imgui.SetTooltipEx("在SIMULATION_START（模拟开始）后延迟PRESENT_START（呈现开始）的帧数（0-2）。0表示无延迟。");
                 }
                 if (settings::g_mainTabSettings.reflex_fps_limiter_max_queued_frames.GetValue() > 0) imgui.EndDisabled();
                 imgui.Unindent();
@@ -734,8 +734,8 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
     }
     if (imgui.IsItemHovered()) {
         imgui.SetTooltipEx(
-            "Uses a safer FPS limiting path with reduced risk of stutter or instability.\n"
-            "Experimental; may have slightly higher latency than the default limiter.");
+            "采用更安全的FPS限制路径，降低卡顿或不稳定的风险。\n"
+            "实验性；延迟可能略高于默认限制器。");
     }
 
     // ReShade runtime list (when multiple runtimes exist): select which runtime to use for DC features
@@ -798,8 +798,8 @@ static void DrawDisplaySettings_FpsLimiterOnPresentSync(display_commander::ui::I
             }
             if (imgui.IsItemHovered()) {
                 imgui.SetTooltipEx(
-                    "When multiple ReShade runtimes (swapchains) exist, select which one Display Commander uses for "
-                    "input blocking, Reflex, and other features. 0 = first runtime.");
+                    "当存在多个ReShade运行时（交换链）时，请选择Display Commander使用哪一个 "
+                    "输入阻塞、反射和其他功能。0=首次运行。");
             }
         }
     }
@@ -823,7 +823,7 @@ static void DrawDisplaySettings_FpsLimiterReflex(display_commander::ui::IImGuiWr
         if (IsNativeReflexActive()) {
             imgui.TextColored(ImVec4(0.0f, 1.0f, 0.0f, 1.0f), ICON_FK_OK " Native Reflex: ACTIVE Limit Real Frames: ON");
             if (imgui.IsItemHovered()) {
-                imgui.SetTooltipEx("The game has native Reflex support and is actively using it. ");
+                imgui.SetTooltipEx("这款游戏原生支持Reflex技术，并且正在积极运用。 ");
             }
             double native_ns = static_cast<double>(g_sleep_reflex_native_ns_smooth.load());
             double calls_per_second = native_ns <= 0 ? -1 : 1000000000.0 / native_ns;
@@ -850,7 +850,7 @@ static void DrawDisplaySettings_FpsLimiterReflex(display_commander::ui::IImGuiWr
             if (DidNativeReflexSleepRecently(now_ns)) {
                 imgui.TextColored(ImVec4(1.0f, 0.6f, 0.0f, 1.0f),
                                   ICON_FK_WARNING
-                                  " Warning: Both native and injected Reflex are active - this may cause conflicts! (FIXME)");
+                                  " 警告：本地和注入的Reflex均处于活动状态 - 这可能会引起冲突！（FIXME）");
             }
 
             drawPclStatsCheckbox();
@@ -865,8 +865,8 @@ static void DrawDisplaySettings_FpsLimiterReflex(display_commander::ui::IImGuiWr
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Suppresses both native Reflex sleep calls (from the game) and injected Reflex sleep calls.\n"
-                "This prevents Reflex from sleeping the CPU, which may help with certain compatibility issues.");
+                "同时抑制原生Reflex休眠调用（来自游戏）和注入的Reflex休眠调用。\n"
+                "这可以防止Reflex使CPU进入休眠状态，从而可能有助于解决某些兼容性问题。");
         }
         imgui.TreePop();
     }
@@ -878,8 +878,8 @@ static void DrawDisplaySettings_FpsLimiterLatentSync(display_commander::ui::IImG
     }
     if (imgui.IsItemHovered()) {
         imgui.SetTooltipEx(
-            "Scanline offset for latent sync (-1000 to 1000). This defines the offset from the "
-            "threshold where frame pacing is active.");
+            "潜同步的扫描线偏移量（-1000至1000）。这定义了与...的偏移量 "
+            "帧速率调整生效的阈值。");
     }
 
     // VBlank Sync Divisor (only visible if latent sync mode is selected)
@@ -918,11 +918,11 @@ static void DrawDisplaySettings_FpsLimiterLatentSync(display_commander::ui::IImG
             auto& latent = dxgi::latent_sync::g_latentSyncManager->GetLatentLimiter();
             if (latent.IsVBlankMonitoringActive()) {
                 imgui.Spacing();
-                imgui.TextColored(ui::colors::STATUS_ACTIVE, "✁EVBlank Monitor: ACTIVE");
+                imgui.TextColored(ui::colors::STATUS_ACTIVE, "✁EVBlank监视器：已激活");
                 if (imgui.IsItemHovered()) {
                     std::string status = latent.GetVBlankMonitorStatusString();
                     imgui.SetTooltipEx(
-                        "VBlank monitoring thread is running and collecting scanline data for frame pacing.\n\n%s",
+                        "垂直消隐监控线程正在运行，并收集扫描线数据以进行帧率调整。\n\n%s",
                         status.c_str());
                 }
 
@@ -936,7 +936,7 @@ static void DrawDisplaySettings_FpsLimiterLatentSync(display_commander::ui::IImG
                                   dxgi::fps_limiter::g_latent_sync_active_height.load());
             } else {
                 imgui.Spacing();
-                imgui.TextColored(ui::colors::STATUS_STARTING, ICON_FK_WARNING " VBlank Monitor: STARTING...");
+                imgui.TextColored(ui::colors::STATUS_STARTING, ICON_FK_WARNING " VBlank监视器：正在启动。..");
                 if (imgui.IsItemHovered()) {
                     std::string status = latent.GetVBlankMonitorStatusString();
                     imgui.SetTooltipEx(
@@ -958,7 +958,7 @@ static void DrawDisplaySettings_FpsLimiterLatentSync(display_commander::ui::IImG
             bool limit_real = GetEffectiveLimitRealFrames();
             if (imgui.Checkbox("Limit Real Frames", &limit_real)) {
                 settings::g_mainTabSettings.limit_real_frames.SetValue(limit_real);
-                LogInfo(limit_real ? "Limit Real Frames enabled" : "Limit Real Frames disabled");
+                LogInfo(limit_real ? "Limit Real Frames enabled" : "限制真实帧数已禁用");
             }
             if (imgui.IsItemHovered()) {
                 imgui.SetTooltipEx(
@@ -992,8 +992,8 @@ static void DrawDisplaySettings_FpsLimiterLatentSync(display_commander::ui::IImG
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "Skip ReShade's on_present processing when the game window is not in the foreground. "
-                "This can save GPU power and reduce background processing.");
+                "当游戏窗口不在前台时，跳过ReShade的on_present处理。 "
+                "这可以节省GPU的功耗并减少后台处理。");
         }
     }
 }
@@ -1018,8 +1018,8 @@ static void DrawDisplaySettings_FpsLimiterAdvanced(display_commander::ui::IImGui
         }
         if (imgui.IsItemHovered()) {
             imgui.SetTooltipEx(
-                "When the game has no native Reflex, use the addon's Reflex (sleep + latency markers) for low "
-                "latency.");
+                "当游戏没有原生Reflex功能时，使用插件的Reflex（睡眠+延迟标记）以降低延迟 "
+                "延迟。");
         }
         if (settings::g_mainTabSettings.inject_reflex.GetValue()) {
             {
