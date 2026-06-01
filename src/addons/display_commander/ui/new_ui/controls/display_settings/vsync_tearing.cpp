@@ -413,7 +413,7 @@ void DrawDisplaySettings_VSyncAndTearing(display_commander::ui::IImGuiWrapper& i
 
     g_rendering_ui_section.store("ui:tab:main_new:vsync_tearing", std::memory_order_release);
     ui::colors::PushHeader2Colors(&imgui);
-    const bool vsync_tearing_open = imgui.CollapsingHeader("VSync & Tearing", ImGuiTreeNodeFlags_None);
+    const bool vsync_tearing_open = imgui.CollapsingHeader("垂直同步与撕裂", ImGuiTreeNodeFlags_None);
     ui::colors::PopCollapsingHeaderColors(&imgui);
     if (vsync_tearing_open) {
         imgui.Indent();
